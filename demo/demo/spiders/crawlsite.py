@@ -37,15 +37,15 @@ class CrawlPens(CrawlSpider):
         item=PageContentItem()
         item['url']=response.url
         item['status']=response.status
-        # item['referer']=response.request.headers.get('Referer')
-        # canonical=response.css("link[rel='canonical']::attr(href)").get()
-        # if canonical != response.url :
-        #     item['canonicalMistmach'] = "true"
-        # else:
-        #     item['canonicalMistmach'] = "false"
+        item['referer']=response.request.headers.get('Referer')
+        canonical=response.css("link[rel='canonical']::attr(href)").get()
+        if canonical != response.url :
+            item['canonicalMistmach'] = "true"
+        else:
+            item['canonicalMistmach'] = "false"
         
-        # item['canonical']=canonical
-        # item['title']=response.css("title::text").get()
-        # item['meta']=''
+        item['canonical']=canonical
+        item['title']=response.css("title::text").get()
+        item['meta']=''
 
         yield item
