@@ -46,6 +46,4 @@ class CrawlPens(CrawlSpider):
         
         item['canonical']=canonical
         item['title']=response.css("title::text").get()
-        item['meta']=''
-
         yield item
