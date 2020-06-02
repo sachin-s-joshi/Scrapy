@@ -4,6 +4,7 @@ from scrapy.linkextractors import LinkExtractor
 from scrapy.linkextractors.lxmlhtml import LxmlLinkExtractor
 from scrapy.item import Field,Item
 import os
+from scrapy import Request
 
 class PageContentItem(Item): # A data storage class(like directory) to store the extracted data
     url = Field()
@@ -17,14 +18,14 @@ class CrawlPens(CrawlSpider):
     name = 'quotes'
     unique_urls=set()
     print(os.getenv('site'))
-    start_urls = [os.getenv('site')]
+    
     handle_httpstatus_list=[404,500,404,501]
    
 
     rules=(
            # Extract link from this path only
         Rule(
-            LxmlLinkExtractor(restrict_xpaths=["//a[contains(@href,'')]"], allow_domains=[os.getenv('domain')]), 
+            LxmlLinkExtractor(restrict_xpaths=["//a[contains(@href,'/se/')]"], allow_domains=[os.getenv('domain')]), 
             callback='parse_items',follow=True
         ),
         # link should match this pattern and create new requests
@@ -33,6 +34,12 @@ class CrawlPens(CrawlSpider):
             callback='parse_items', follow=True
         )
     )
+
+    def start_requests(self):
+        urls = [os.getenv('site')]
+        for i, url in enumerate(urls):
+            yield scrapy.Request(url=url,cookies={'loginCookie':'b9904a53-ecba-49e3-a210-d7e17ac99908'},headers={'User-Agent':'crawler-test-se'})
+
     def parse_items(self, response):
         item=PageContentItem()
         item['url']=response.url
