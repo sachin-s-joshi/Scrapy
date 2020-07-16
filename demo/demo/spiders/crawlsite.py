@@ -5,6 +5,7 @@ from scrapy.linkextractors.lxmlhtml import LxmlLinkExtractor
 from scrapy.item import Field,Item
 import os
 from scrapy import Request
+from urllib.parse import unquote
 
 class PageContentItem(Item): # A data storage class(like directory) to store the extracted data
     url = Field()
@@ -16,21 +17,23 @@ class PageContentItem(Item): # A data storage class(like directory) to store the
 
 class CrawlPens(CrawlSpider):
     name = 'quotes'
-    unique_urls=set()
     print(os.getenv('site'))
-    
-    handle_httpstatus_list=[404,500,404,501]
+    domain=os.getenv('site').split('/')[2]
+    reg=os.getenv('site').split('/')[3]
+    allow=os.getenv('site') + "*"
+    print(allow,domain,reg)
+    handle_httpstatus_list=[404,500,404,501,403]
    
 
     rules=(
            # Extract link from this path only
         Rule(
-            LxmlLinkExtractor(restrict_xpaths=["//a[contains(@href,'/se/')]"], allow_domains=[os.getenv('domain')]), 
+            LxmlLinkExtractor(restrict_xpaths=["//a[@href='/dk/']"], allow_domains=domain), 
             callback='parse_items',follow=True
         ),
         # link should match this pattern and create new requests
         Rule(
-            LxmlLinkExtractor(allow=[os.getenv('allow')], allow_domains=[os.getenv('domain')]), 
+            LxmlLinkExtractor(allow=allow, allow_domains=domain), 
             callback='parse_items', follow=True
         )
     )
@@ -38,15 +41,15 @@ class CrawlPens(CrawlSpider):
     def start_requests(self):
         urls = [os.getenv('site')]
         for i, url in enumerate(urls):
-            yield scrapy.Request(url=url,cookies={'loginCookie':'b9904a53-ecba-49e3-a210-d7e17ac99908'},headers={'User-Agent':'crawler-test-se'})
+            yield scrapy.Request(url=url,cookies={'loginCookie':os.getenv('cookie'),'fake':'true'},headers={'User-Agent':'np-site-crawler'})
 
     def parse_items(self, response):
         item=PageContentItem()
-        item['url']=response.url
+        item['url']=unquote(response.url,encoding='UTF-8') #for handling encoding 
         item['status']=response.status
         item['referer']=response.request.headers.get('Referer')
         canonical=response.css("link[rel='canonical']::attr(href)").get()
-        if canonical != response.url :
+        if canonical != item['url'] :
             item['canonicalMistmach'] = "true"
         else:
             item['canonicalMistmach'] = "false"

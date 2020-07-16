@@ -95,7 +95,7 @@ DUPEFILTER_CLASS='scrapy.dupefilters.RFPDupeFilter'
 #     'csv': 'scrapy.exporters.CsvItemExporter'
 # }
 FEED_FORMAT = 'csv'
-FEED_URI = "rep.csv"
-DEPTH_LIMIT=0
+FEED_URI = "results.csv"
+DEPTH_LIMIT=0  #means no limit
 CONCURRENT_ITEMS=100
 CONCURRENT_REQUESTS_PER_DOMAIN=16
