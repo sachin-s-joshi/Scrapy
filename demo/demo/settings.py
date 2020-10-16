@@ -48,15 +48,15 @@ CONCURRENT_REQUESTS = 32
 
 # Enable or disable spider middlewares
 # See https://docs.scrapy.org/en/latest/topics/spider-middleware.html
-#SPIDER_MIDDLEWARES = {
-#    'demo.middlewares.DemoSpiderMiddleware': 543,
-#}
+SPIDER_MIDDLEWARES = {
+   'demo.middlewares.DemoSpiderMiddleware': 543,
+}
 
 # Enable or disable downloader middlewares
 # See https://docs.scrapy.org/en/latest/topics/downloader-middleware.html
-#DOWNLOADER_MIDDLEWARES = {
-#    'demo.middlewares.DemoDownloaderMiddleware': 543,
-#}
+DOWNLOADER_MIDDLEWARES = {
+   'scrapy.downloadermiddlewares.redirect.RedirectMiddleware':543
+}
 
 # Enable or disable extensions
 # See https://docs.scrapy.org/en/latest/topics/extensions.html
@@ -99,3 +99,4 @@ FEED_URI = "results.csv"
 DEPTH_LIMIT=0  #means no limit
 CONCURRENT_ITEMS=100
 CONCURRENT_REQUESTS_PER_DOMAIN=16
+RIDIRECT_ENABLED=True
