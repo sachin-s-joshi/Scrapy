@@ -93,7 +93,6 @@ class CrawlPens(CrawlSpider):
         item['metaDesc'] = response.css("meta[name='description']::attr('content')").getall()
         item['metaKeywords'] = response.css("meta[name='keywords']::attr('content')").getall()
         if response.status in [301, 302]:
-
             redirect_list = response.request.meta
             print(redirect_list)
             item['redirect_url'] = redirect_list
