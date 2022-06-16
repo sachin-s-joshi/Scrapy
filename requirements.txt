@@ -7,7 +7,7 @@ cssselect==1.1.0
 hyperlink==19.0.0
 idna==2.9
 incremental==17.5.0
-lxml==4.5.0
+lxml==4.6.3
 parsel==1.6.0
 Protego==0.1.16
 pyasn1==0.4.8
@@ -18,7 +18,7 @@ PyHamcrest==2.0.2
 pyOpenSSL==19.1.0
 python-dotenv==0.13.0
 queuelib==1.5.0
-Scrapy==2.1.0
+Scrapy==2.5.1
 service-identity==18.1.0
 six==1.14.0
 Twisted==20.3.0
